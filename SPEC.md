@@ -2,7 +2,7 @@
 
 **1.0 means:** I can open the app on a Quest 2, sign in to Steam, install a game from my library and play it for 30 minutes with no jitter and no crash.
 
-**Approved by me:** not yet
+**Approved by me:** 2026-10-30, recorded in `CHANGELOG.fork.md` (the 2026-10-30 entry "Spec approved").
 
 A project is Spec'd only when the line above has a date and a link. Change a Must or a Won't after approval and the approval line goes back to "not yet" until I approve again.
 
