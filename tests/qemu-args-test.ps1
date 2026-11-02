@@ -31,7 +31,7 @@ function Get-QemuArgv {
 function Test-QemuArguments {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
-        [Parameter(Mandatory = $true)][string[]]$Arguments
+        [Parameter(Mandatory = $true)][AllowEmptyString()][string[]]$Arguments
     )
 
     $expected = @($Arguments)
