@@ -68,4 +68,11 @@ cp -a "$repo/packages/windows-runtime/windows-venus" "$repo/packages/windows-run
 "$output/qemu-system-aarch64.exe" --version
 "$output/qemu-system-aarch64.exe" -display help | grep -x gtk
 "$output/qemu-system-aarch64.exe" -device virtio-gpu-gl-pci,help | grep venus
+# The package folder is the parent of qemu/. Append the launcher and every QEMU
+# file to the SHA256SUMS build-image.sh started so packaging can verify them.
+(
+  cd "$(dirname "$output")"
+  sha256sum start-vm.ps1 start-vm.cmd
+  find qemu -type f -print0 | sort -z | xargs -0 sha256sum
+) >> SHA256SUMS
 echo "Built portable Windows QEMU runtime: $output"
