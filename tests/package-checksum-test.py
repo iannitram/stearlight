@@ -14,7 +14,11 @@ class PackageChecksumTest(unittest.TestCase):
     def test_hash_list_covers_launchers_and_qemu_tree(self):
         self.assertIn("sha256sum start-vm.ps1 start-vm.cmd", self.runtime)
         self.assertIn("find qemu -type f -print0", self.runtime)
-        self.assertIn(">> SHA256SUMS", self.runtime)
+
+    def test_hash_lines_append_to_package_folder(self):
+        self.assertIn('sums="$(dirname "$output")/SHA256SUMS"', self.runtime)
+        self.assertIn(') >> "$sums"', self.runtime)
+        self.assertNotIn(") >> SHA256SUMS", self.runtime)
 
     def test_package_rejects_missing_or_replaced_qemu_entries(self):
         self.assertIn("Checksum mismatch: $file", self.package)

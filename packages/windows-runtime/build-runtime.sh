@@ -70,12 +70,16 @@ cp -a "$repo/packages/windows-runtime/windows-venus" "$repo/packages/windows-run
 "$output/qemu-system-aarch64.exe" -device virtio-gpu-gl-pci,help | grep venus
 # The package folder is the parent of qemu/. Append the launcher and every QEMU
 # file to the SHA256SUMS build-image.sh started so packaging can verify them.
+# The append names that file by path: a bare redirect after the subshell would
+# write to the caller's working directory instead of the package folder.
+sums="$(dirname "$output")/SHA256SUMS"
 (
   cd "$(dirname "$output")"
   # Drop any launcher and qemu/ lines a previous run appended, keeping the
-  # image, kernel and initramfs lines that build-image.sh wrote.
+  # image, kernel and initramfs lines that build-image.sh wrote, rewritten in
+  # text mode (no `*`) like the lines appended below.
   if [ -f SHA256SUMS ]; then
-    awk '{ name = $2; sub(/^\*/, "", name); if (name ~ /^(start-vm\.ps1|start-vm\.cmd|qemu\/)/) next; print }' \
+    awk '{ name = $2; sub(/^\*/, "", name); if (name ~ /^(start-vm\.ps1|start-vm\.cmd|qemu\/)/) next; sub(/ \*/, "  "); print }' \
       SHA256SUMS > SHA256SUMS.tmp
     mv SHA256SUMS.tmp SHA256SUMS
   fi
@@ -84,5 +88,5 @@ cp -a "$repo/packages/windows-runtime/windows-venus" "$repo/packages/windows-run
   cd "$(dirname "$output")"
   sha256sum start-vm.ps1 start-vm.cmd | sed 's/ \*/  /'
   find qemu -type f -print0 | sort -z | xargs -0 sha256sum | sed 's/ \*/  /'
-) >> SHA256SUMS
+) >> "$sums"
 echo "Built portable Windows QEMU runtime: $output"
