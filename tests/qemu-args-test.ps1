@@ -24,7 +24,8 @@ function Get-QemuArgv {
         $process.Dispose()
     }
     if ($exitCode -ne 0) { throw "Python failed: $stderr" }
-    return ,@(ConvertFrom-Json $stdout)
+    $decoded = ConvertFrom-Json $stdout
+    return @($decoded)
 }
 
 function Test-QemuArguments {
