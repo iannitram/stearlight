@@ -14,6 +14,7 @@ foreach ($relative in @('start-vm.cmd', 'start-vm.ps1', 'vmlinuz-lts', 'initramf
 $listed = @{}
 foreach ($entry in Get-Content -LiteralPath (Join-Path $package 'SHA256SUMS')) {
     $hash, $file = $entry -split '\s+', 2
+    $file = $file -replace '^\*', ''
     $listed[[IO.Path]::GetFullPath((Join-Path $package $file)).ToLowerInvariant()] = $true
     if ((Get-FileHash -LiteralPath (Join-Path $package $file) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $hash) {
         throw "Checksum mismatch: $file"

@@ -72,7 +72,17 @@ cp -a "$repo/packages/windows-runtime/windows-venus" "$repo/packages/windows-run
 # file to the SHA256SUMS build-image.sh started so packaging can verify them.
 (
   cd "$(dirname "$output")"
-  sha256sum start-vm.ps1 start-vm.cmd
-  find qemu -type f -print0 | sort -z | xargs -0 sha256sum
+  # Drop any launcher and qemu/ lines a previous run appended, keeping the
+  # image, kernel and initramfs lines that build-image.sh wrote.
+  if [ -f SHA256SUMS ]; then
+    awk '{ name = $2; sub(/^\*/, "", name); if (name ~ /^(start-vm\.ps1|start-vm\.cmd|qemu\/)/) next; print }' \
+      SHA256SUMS > SHA256SUMS.tmp
+    mv SHA256SUMS.tmp SHA256SUMS
+  fi
+)
+(
+  cd "$(dirname "$output")"
+  sha256sum start-vm.ps1 start-vm.cmd | sed 's/ \*/  /'
+  find qemu -type f -print0 | sort -z | xargs -0 sha256sum | sed 's/ \*/  /'
 ) >> SHA256SUMS
 echo "Built portable Windows QEMU runtime: $output"

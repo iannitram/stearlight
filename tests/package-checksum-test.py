@@ -26,6 +26,12 @@ class PackageChecksumTest(unittest.TestCase):
         for name in ("start-vm.ps1", "start-vm.cmd"):
             self.assertIn(name, self.package)
 
+    def test_runtime_writes_text_hash_lines(self):
+        self.assertIn("sed 's/ \\*/  /'", self.runtime)
+
+    def test_package_strips_leading_star_from_file_name(self):
+        self.assertIn("$file -replace '^\\*'", self.package)
+
 
 if __name__ == "__main__":
     unittest.main()
