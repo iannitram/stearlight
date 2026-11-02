@@ -22,6 +22,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'qemu-args.ps1')
 if ($AnimationPreview -and $GamescopePreview) { throw 'Choose one preview mode.' }
 $displayPreview = $AnimationPreview -or $GamescopePreview
 if ($BrowserGpu -and (-not $WindowsGpuBridge -or $displayPreview)) {
@@ -126,7 +127,7 @@ $args = @(
     '-monitor', 'none',
     '-serial', "file:$shared/serial-test.log",
     '-kernel', $kernel, '-initrd', $initramfs,
-    '-append', ('"' + $kernelCommandLine + '"'),
+    '-append', $kernelCommandLine,
     '-drive'
 )
 $rootDrive = "file=$diskQemu,format=$DiskFormat,if=virtio"
@@ -143,6 +144,7 @@ if ($DebugConsolePort) {
         '-chardev', "socket,id=debug,host=127.0.0.1,port=$DebugConsolePort,server=on,wait=off",
         '-device', 'virtconsole,chardev=debug')
 }
+$qemuCommandLine = Join-QemuArguments $args
 $qemuTemp = Join-Path $output 'qemu-temp'
 New-Item -ItemType Directory -Force -Path $qemuTemp | Out-Null
 $oldTemp = $env:TEMP
@@ -158,7 +160,8 @@ try {
         $env:STEARLIGHT_VULKAN_IMAGE_EXPORT = '1'
         $env:VIRGL_LOG_FILE = (Join-Path $output 'windows-venus.log').Replace('\', '/')
     }
-    $process = Start-Process -FilePath $qemu -ArgumentList $args -PassThru `
+    Write-Host "QEMU arguments: $qemuCommandLine"
+    $process = Start-Process -FilePath $qemu -ArgumentList $qemuCommandLine -PassThru `
         -WorkingDirectory $output -WindowStyle Normal -RedirectStandardError $stderr
     Write-Host "Windows QEMU started: $qemu"
     Write-Host "Waiting for the Frame display. Log: $serial"
