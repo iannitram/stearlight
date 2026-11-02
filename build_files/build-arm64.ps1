@@ -157,8 +157,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Could not create a temporary Linux build volum
 try {
     $dockerOutput = $output.Replace('\', '/')
     & docker run --rm --platform linux/arm64 `
-        -v "${volume}:/work" -v "${dockerOutput}:/out" -e "STEARLIGHT_DISK_SIZE=${diskSize}G" alpine:edge sh -c `
-        'apk add --no-cache e2fsprogs >/dev/null && mkdir -p /work/rootfs && tar -xf /out/rootfs.tar -C /work/rootfs && truncate -s $STEARLIGHT_DISK_SIZE /work/stearlight-arm64.ext4 && mke2fs -q -F -t ext4 -O ^has_journal,^orphan_file -E lazy_itable_init=0 -d /work/rootfs /work/stearlight-arm64.ext4 && e2fsck -fn /work/stearlight-arm64.ext4 && cp /work/stearlight-arm64.ext4 /out/stearlight-arm64.ext4'
+        -v "${volume}:/work" -v "${dockerOutput}:/out" -e "STEARLIGHT_DISK_SIZE=${diskSize}G" alpine:3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 sh -c `
+        'apk add --no-cache e2fsprogs=1.47.4-r0 >/dev/null && mkdir -p /work/rootfs && tar -xf /out/rootfs.tar -C /work/rootfs && truncate -s $STEARLIGHT_DISK_SIZE /work/stearlight-arm64.ext4 && mke2fs -q -F -t ext4 -O ^has_journal,^orphan_file -E lazy_itable_init=0 -d /work/rootfs /work/stearlight-arm64.ext4 && e2fsck -fn /work/stearlight-arm64.ext4 && cp /work/stearlight-arm64.ext4 /out/stearlight-arm64.ext4'
     if ($LASTEXITCODE -ne 0) { throw 'Could not create the ARM64 ext4 VM disk.' }
 } finally {
     & docker volume rm $volume | Out-Null
