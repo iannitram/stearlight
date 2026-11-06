@@ -96,3 +96,7 @@ python3 packages/quest-runtime/tests/capture-matrix-abi.test.py
 python3 packages/quest-runtime/tests/network-bridge.test.py
 python3 packages/quest-runtime/tests/network-interfaces.test.py
 python3 packages/quest-runtime/tests/socket-registry.test.py
+seals_binary=$(mktemp)
+cc -std=c11 -Wall -Wextra -Werror tests/memfd-seals-test.c -o "$seals_binary"
+"$seals_binary"
+rm -f -- "$seals_binary"
