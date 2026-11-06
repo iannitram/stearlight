@@ -22,6 +22,10 @@ log_binary=$(mktemp)
 g++ -O2 -std=c++17 -Wall -Wextra -Werror packages/quest-runtime/tests/update-log.test.cpp -o "$log_binary"
 "$log_binary"
 rm -f -- "$log_binary"
+race_binary=$(mktemp)
+g++ -O2 -std=c++17 -Wall -Wextra -Werror packages/quest-runtime/tests/update-log-race.test.cpp -o "$race_binary"
+"$race_binary"
+rm -f -- "$race_binary"
 python3 packages/quest-runtime/tests/os-update-activation.test.py
 python3 packages/quest-runtime/tests/audio-queue.test.py
 python3 packages/quest-runtime/tests/audio-identity.test.py
