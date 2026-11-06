@@ -1,3 +1,4 @@
+#undef NDEBUG // The calls sit outside assert(); keep the checks live in -DNDEBUG builds too.
 #include "video_image_layout.h"
 #include <cassert>
 #include <cstdio>
