@@ -15,6 +15,10 @@ python3 packages/quest-runtime/tests/clean-build.test.py
 python3 packages/quest-runtime/tests/chromium-download.test.py
 python3 tests/recovery-test.py
 python3 packages/quest-runtime/tests/rootfs-archive.test.py
+text_binary=$(mktemp)
+cc -std=c11 -Wall -Wextra -Werror tests/log-text-test.c -o "$text_binary"
+"$text_binary"
+rm -f -- "$text_binary"
 python3 packages/quest-runtime/tests/clock-bridge.test.py
 python3 packages/quest-runtime/tests/battery-snapshot.test.py
 python3 packages/quest-runtime/tests/steam-os-update.test.py
