@@ -61,6 +61,10 @@ python3 packages/quest-runtime/tests/video-queue.test.py
 python3 packages/quest-runtime/tests/video-codec.test.py
 python3 packages/quest-runtime/tests/streaming-input.test.py
 python3 packages/quest-runtime/tests/streaming-socket.test.py
+tracking_binary=$(mktemp)
+g++ -O2 -std=c++17 -Wall -Wextra -Werror packages/quest-runtime/tests/tracking-publication.test.cpp -o "$tracking_binary"
+"$tracking_binary"
+rm -f -- "$tracking_binary"
 python3 packages/quest-runtime/tests/video-format.test.py
 python3 packages/quest-runtime/tests/game-launch-wrapper.test.py
 python3 packages/quest-runtime/tests/game-runtime.test.py

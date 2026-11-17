@@ -11,6 +11,7 @@ int main() {
  shared->magic=QUEST_BRIDGE_MAGIC;shared->version=QUEST_BRIDGE_VERSION;
  pid_t reader=fork();assert(reader>=0);
  if(!reader){
+  alarm(30);
   unsigned reads=0;
   for(;;){
    auto sequence=__atomic_load_n(&shared->sequence,__ATOMIC_ACQUIRE);
