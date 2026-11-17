@@ -2,6 +2,7 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <string>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -14,7 +15,11 @@ static int failures = 0;
 static std::string gRaceTarget;
 static int race_unlink(const char* path) {
  int result = unlink(path);
- if (!gRaceTarget.empty()) symlink(gRaceTarget.c_str(), path);
+ if (!gRaceTarget.empty() && symlink(gRaceTarget.c_str(), path) != 0) {
+  int error = errno;
+  fprintf(stderr, "FAILED: race symlink(%s, %s): %s\n", gRaceTarget.c_str(), path, strerror(error));
+  ++failures;
+ }
  return result;
 }
 #define unlink(path) race_unlink(path)
