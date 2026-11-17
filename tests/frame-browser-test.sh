@@ -28,6 +28,15 @@ if STEARLIGHT_STEAM_ROOT="$root" sh "$prepare" 1 2>"$tmp/error"; then
 fi
 grep -q 'does not match' "$tmp/error"
 cmp "$wrapper" "$tmp/expected"
-if STEARLIGHT_STEAM_ROOT="$root" sh "$prepare" 2 2>"$tmp/error"; then exit 1; fi
+if STEARLIGHT_STEAM_ROOT="$root" sh "$prepare" 2 2>"$tmp/error"; then
+    # Mode 2 should have failed, so if it succeeds we fail the test
+    echo 'Mode 2 unexpectedly succeeded.' >&2
+    exit 1
+fi
+# Check that the error message is correct for mode 2 rejection
+if ! grep -q 'Expected browser GPU mode 0 or 1.' "$tmp/error"; then
+    echo 'Wrong error message for invalid mode 2.' >&2
+    exit 1
+fi
 cmp "$wrapper" "$tmp/expected"
 echo 'Frame browser default, restore and recovery guard checks passed'
