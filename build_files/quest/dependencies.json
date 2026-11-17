@@ -245,12 +245,12 @@
       "sha256": "31834a23bc6ca602b55a3be3070e228a13ab66a99c45d61bd8a22697b9f19503"
     },
     "git": {
-      "url": "https://dl-cdn.alpinelinux.org/alpine/edge/main/aarch64/git-2.56.0-r0.apk",
-      "sha256": "3ff37ddcc6eaf5aa12f52eff83c453fcc99d87ac018564b3b7b6e1f64753f994"
+      "url": "https://dl-cdn.alpinelinux.org/alpine/edge/main/aarch64/git-2.56.1-r0.apk",
+      "sha256": "2c08558bc118437fedbb23fb81f516dcc1f2903d3436d522d2aa700929ce7f7b"
     },
     "git-init-template": {
-      "url": "https://dl-cdn.alpinelinux.org/alpine/edge/main/aarch64/git-init-template-2.56.0-r0.apk",
-      "sha256": "65e6bedb3545497060cb2faa5e36c64f7984f7c9e2b77804fb0c5ddac9bd1be2"
+      "url": "https://dl-cdn.alpinelinux.org/alpine/edge/main/aarch64/git-init-template-2.56.1-r0.apk",
+      "sha256": "46c39cd0462b649695ba95e665962e0e93ee0130f33999e315e2243cd54f8f24"
     },
     "nano": {
       "url": "https://dl-cdn.alpinelinux.org/alpine/edge/main/aarch64/nano-9.3-r0.apk",
