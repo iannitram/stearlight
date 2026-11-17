@@ -62,6 +62,10 @@ python3 packages/quest-runtime/tests/video-codec.test.py
 python3 packages/quest-runtime/tests/streaming-input.test.py
 python3 packages/quest-runtime/tests/streaming-socket.test.py
 python3 packages/quest-runtime/tests/video-format.test.py
+layout_binary=$(mktemp)
+g++ -O2 -std=c++17 -Wall -Wextra -Werror -Ipackages/quest-runtime/linux packages/quest-runtime/tests/video-image-layout.test.cpp -o "$layout_binary"
+"$layout_binary"
+rm -f -- "$layout_binary"
 python3 packages/quest-runtime/tests/game-launch-wrapper.test.py
 python3 packages/quest-runtime/tests/game-runtime.test.py
 python3 packages/quest-runtime/tests/proton-runtime.test.py
