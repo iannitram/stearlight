@@ -19,3 +19,5 @@ the user's request.
 
 1. Do not loop on a feature that cannot work in the current Quest/runtime.
 2. Keep tests focused and report concise results rather than dumping logs.
+
+**Upstream and peers:** see `PEERS.md` at the repo root. When I say "upstream", I mean the repo in its Upstream section; reuse a peer's code only as that file allows.
